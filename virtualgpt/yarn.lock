@@ -2914,6 +2914,11 @@ babel-preset-react-app@^10.0.1:
     babel-plugin-macros "^3.1.0"
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
 
+babylonjs@^6.3.1:
+  version "6.3.1"
+  resolved "https://registry.yarnpkg.com/babylonjs/-/babylonjs-6.3.1.tgz#c54a4f0ac0e93acc4569bf0c1cf27520f3e6884a"
+  integrity sha512-2Ss7iBtyyFWA1NH57Cvbl+Yvt+ma9E4jdqCHzP8DbaFHnWg6UdZ6iC8N4tYBNcUInIUFgRnkwOftidQntI/6rA==
+
 balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
