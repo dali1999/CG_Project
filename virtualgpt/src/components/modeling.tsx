@@ -1,14 +1,15 @@
 import React from 'react'
 import {
     FreeCamera,
+    ArcRotateCamera,
     Vector3,
     Color3,
     HemisphericLight,
     MeshBuilder,
     Scene,
+    SceneLoader,
     Mesh,
     HavokPlugin,
-    SceneLoader,
     Engine,
     KeyboardEventTypes,
 } from '@babylonjs/core'
@@ -22,15 +23,22 @@ HavokPhysics().then((havok) => {
     initializedHavok = havok
 })
 
-let box: Mesh
 let ground: Mesh
+let sphere
+let village
 
-const cameraSpeed = 0.5
+// const cameraSpeed = 0.5
 
 const onSceneReady = async (scene: Scene) => {
     // This creates and positions a free camera (non-mesh)
-    var camera = new FreeCamera('camera1', new Vector3(70, 150, 70), scene)
-
+    // var camera = new FreeCamera('camera1', new Vector3(100, 100, 100), scene)
+    const camera = new ArcRotateCamera(
+        'camera',
+        -Math.PI / 2,
+        Math.PI / 2.5,
+        10,
+        new Vector3(0, 300, 300)
+    )
     // This targets the camera to scene origin
     camera.setTarget(Vector3.Zero())
 
@@ -45,9 +53,9 @@ const onSceneReady = async (scene: Scene) => {
     const assumedFramesPerSecond = 60
     const earthGravity = -90.81
     scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0)
-    camera.applyGravity = true
+    // camera.applyGravity = true
 
-    camera.ellipsoid = new Vector3(1, 1, 1)
+    // camera.ellipsoid = new Vector3(1, 1, 1)
     scene.collisionsEnabled = true
     camera.checkCollisions = true
 
@@ -56,15 +64,14 @@ const onSceneReady = async (scene: Scene) => {
 
     // Default intensity is 1. Let's dim the light a small amount
     light.intensity = 0.4
+    
+    ground = MeshBuilder.CreateGround('ground', { width: 300, height: 300 })
+    
+    ground.position.y = -5
+    ground.position.x = 0
+    ground.position.z = 0
+    ground.checkCollisions = true
 
-    // Our built-in 'box' shape.
-    box = MeshBuilder.CreateBox('box', { size: 100 }, scene)
-    //ground= MeshBuilder.CreatePlane("ground",{size:10})
-    // Move the box upward 1/2 its height
-    box.position.y = 0
-    box.position.x = 10
-    box.position.z = 10
-    box.checkCollisions = true
     //ground.checkCollisions = true;
     const gravity = new Vector3(0, -10, 0)
 
@@ -74,22 +81,23 @@ const onSceneReady = async (scene: Scene) => {
     // Our built-in 'ground' shape.
     //MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);
 
-    addBoxToObject(scene)
+    addSphere(scene)
 }
 
-const addBoxToObject = (scene: Scene) => {
-    const box = MeshBuilder.CreateBox('box', { size: 5 }, scene)
-    box.position = new Vector3(0, 50, 0)
+const addSphere = (scene: Scene) => {
+    // Create a sphere above the ground============================
+    sphere = MeshBuilder.CreateSphere('sphere', { diameter: 10 }, scene)
+    sphere.position = new Vector3(0, 0, 0)
     const material = new StandardMaterial('boxMaterial', scene)
     material.diffuseColor = new Color3(1, 0.5, 0) // Orange color
-    box.material = material
+    sphere.material = material
 }
 
 /**
  * Will run on every frame render.  We are spinning the box on y-axis.
  */
 const onRender = (scene: Scene) => {
-    if (box !== undefined) {
+    if (ground !== undefined) {
         var deltaTimeInMillis = scene.getEngine().getDeltaTime()
 
         const rpm = 10
