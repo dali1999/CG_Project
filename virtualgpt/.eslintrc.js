@@ -35,7 +35,7 @@ module.exports = {
             "import/extensions": [
                 'off',
               ],    
-            "react/display-name":"warn",
+            "react/display-name":"off",
             "no-var":"warn"
 
 
