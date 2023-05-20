@@ -1,4 +1,6 @@
 import React from 'react'
+import { addTest, addAssets, addTree } from './objects'
+
 import {
     FreeCamera,
     ArcRotateCamera,
@@ -11,12 +13,16 @@ import {
     Mesh,
     HavokPlugin,
     Engine,
-    KeyboardEventTypes,
 } from '@babylonjs/core'
 import SceneComponent from 'babylonjs-hook' // if you install 'babylonjs-hook' NPM.
-import '../css/Modeling.css'
 import HavokPhysics from '@babylonjs/havok'
+import '../css/Modeling.css'
+import Assets from '@babylonjs/assets'
+import '@babylonjs/loaders'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
+import 'babylonjs-procedural-textures'
+import { BrickProceduralTexture } from 'babylonjs-procedural-textures'
+
 let initializedHavok
 
 HavokPhysics().then((havok) => {
@@ -24,10 +30,14 @@ HavokPhysics().then((havok) => {
 })
 
 let ground: Mesh
-let sphere
-let village
+let wall1: Mesh
+let wall2: Mesh
+let wall3: Mesh
+let wall4: Mesh
 
-// const cameraSpeed = 0.5
+let sphere
+
+const PI = Math.PI
 
 const onSceneReady = async (scene: Scene) => {
     // This creates and positions a free camera (non-mesh)
@@ -37,7 +47,7 @@ const onSceneReady = async (scene: Scene) => {
         -Math.PI / 2,
         Math.PI / 2.5,
         10,
-        new Vector3(0, 300, 300)
+        new Vector3(0, 100, 100)
     )
     // This targets the camera to scene origin
     camera.setTarget(Vector3.Zero())
@@ -64,13 +74,32 @@ const onSceneReady = async (scene: Scene) => {
 
     // Default intensity is 1. Let's dim the light a small amount
     light.intensity = 0.4
-    
-    ground = MeshBuilder.CreateGround('ground', { width: 300, height: 300 })
-    
-    ground.position.y = -5
-    ground.position.x = 0
-    ground.position.z = 0
+
+    //Plain ground
+    ground = MeshBuilder.CreateGround('ground', { width: 100, height: 100 })
+    ground.position = new Vector3(0, 0, 0)
     ground.checkCollisions = true
+
+    //wall
+    wall1 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
+    wall1.position = new Vector3(0, 15, -50)
+    wall1.rotation = new Vector3(Math.PI / 2, 0, 0)
+    wall1.checkCollisions = true
+
+    wall2 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
+    wall2.position = new Vector3(-50, 15, 0)
+    wall2.rotation = new Vector3(Math.PI / 2, Math.PI / 2, 0)
+    wall2.checkCollisions = true
+
+    wall3 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
+    wall3.position = new Vector3(50, 15, 0)
+    wall3.rotation = new Vector3(Math.PI / 2, 0, Math.PI / 2)
+    wall3.checkCollisions = true
+
+    wall4 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
+    wall4.position = new Vector3(0, 15, 50)
+    wall4.rotation = new Vector3(Math.PI / 2, -Math.PI / 2, Math.PI / 2)
+    wall4.checkCollisions = true
 
     //ground.checkCollisions = true;
     const gravity = new Vector3(0, -10, 0)
@@ -81,17 +110,21 @@ const onSceneReady = async (scene: Scene) => {
     // Our built-in 'ground' shape.
     //MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);
 
-    addSphere(scene)
+    addAssets(scene)
+    addTest(scene)
+    addTree(scene)
+
+    
 }
 
-const addSphere = (scene: Scene) => {
-    // Create a sphere above the ground============================
-    sphere = MeshBuilder.CreateSphere('sphere', { diameter: 10 }, scene)
-    sphere.position = new Vector3(0, 0, 0)
-    const material = new StandardMaterial('boxMaterial', scene)
-    material.diffuseColor = new Color3(1, 0.5, 0) // Orange color
-    sphere.material = material
-}
+// const addSphere = (scene: Scene) => {
+//     // Create a sphere above the ground============================
+//     sphere = MeshBuilder.CreateSphere('sphere', { diameter: 10 }, scene)
+//     sphere.position = new Vector3(0, 0, 0)
+//     const material = new StandardMaterial('boxMaterial', scene)
+//     material.diffuseColor = new Color3(1, 0.5, 0) // Orange color
+//     sphere.material = material
+// }
 
 /**
  * Will run on every frame render.  We are spinning the box on y-axis.
