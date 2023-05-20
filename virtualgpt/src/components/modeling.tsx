@@ -20,11 +20,7 @@ import {
 import SceneComponent from 'babylonjs-hook' // if you install 'babylonjs-hook' NPM.
 import HavokPhysics from '@babylonjs/havok'
 import '../css/Modeling.css'
-import Assets from '@babylonjs/assets'
-import '@babylonjs/loaders'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
-import 'babylonjs-procedural-textures'
-import { BrickProceduralTexture } from 'babylonjs-procedural-textures'
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, rootReducer } from "../redux/modules/reducer";
 import { changeTextInput,askGpt } from "../redux/modules/actions";
@@ -144,6 +140,10 @@ const onRender = (scene: Scene) => {
     }
 }
 
+
+
+export default () => {
+
   const [ask, setAsk] = useState("");
   const handleChange = ({ target: { value } }:any) => setAsk(value);
   const dispatch = useDispatch()
@@ -159,8 +159,8 @@ const onRender = (scene: Scene) => {
   }
   
 
-export default () => (
-    <div>
+    return(
+        <div>
         <SceneComponent
             antialias
             onSceneReady={onSceneReady}
@@ -181,4 +181,6 @@ export default () => (
         }
         </div>
     </div>
-)
+    )
+}
+    

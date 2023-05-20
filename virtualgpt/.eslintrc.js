@@ -28,7 +28,7 @@ module.exports = {
         'react-hooks/rules-of-hooks': 'error',
         'react-hooks/exhaustive-deps': 'warn',
         'import/extensions': ['off'],
-        'react/display-name': 'warn',
+        'react/display-name': 'off',
         'no-var': 'warn',
     },
     settings: {

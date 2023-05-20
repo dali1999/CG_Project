@@ -8,15 +8,14 @@ import {
     Mesh,
     HavokPlugin,
     Engine,
+    ActionManager,
+    ExecuteCodeAction,
 } from '@babylonjs/core'
 import SceneComponent from 'babylonjs-hook' // if you install 'babylonjs-hook' NPM.
 import HavokPhysics from '@babylonjs/havok'
 import '../css/Modeling.css'
 import Assets from '@babylonjs/assets'
-import '@babylonjs/loaders'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
-import 'babylonjs-procedural-textures'
-import { BrickProceduralTexture } from 'babylonjs-procedural-textures'
 
 let initializedHavok
 
@@ -100,7 +99,7 @@ const addAssets = (scene: Scene) => {
 }
 const addTree = (scene: Scene) => {
     SceneLoader.ImportMesh(
-        '',
+        'tree',
         Assets.meshes.tree1_glb.rootUrl,
         Assets.meshes.tree1_glb.filename,
         scene,
