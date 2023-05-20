@@ -1,1 +1,6 @@
-export {}
+export enum ActionType{
+    TEXT_INPUT="TEXT_INPUT",
+    POST_GPT="POST_GPT",
+    POST_GPT_SUCCESS="POST_GPT_SUCCESS",
+    POST_GPT_FAIL="POST_GPT_FAIL"
+}

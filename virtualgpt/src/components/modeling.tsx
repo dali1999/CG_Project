@@ -1,4 +1,5 @@
-import React from 'react'
+
+import React,{useState}  from 'react'
 import { addTest, addAssets, addTree } from './objects'
 
 import {
@@ -13,6 +14,8 @@ import {
     Mesh,
     HavokPlugin,
     Engine,
+    ActionManager,
+    ExecuteCodeAction,
 } from '@babylonjs/core'
 import SceneComponent from 'babylonjs-hook' // if you install 'babylonjs-hook' NPM.
 import HavokPhysics from '@babylonjs/havok'
@@ -22,7 +25,10 @@ import '@babylonjs/loaders'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
 import 'babylonjs-procedural-textures'
 import { BrickProceduralTexture } from 'babylonjs-procedural-textures'
-
+import { useSelector, useDispatch } from "react-redux";
+import { RootState, rootReducer } from "../redux/modules/reducer";
+import { changeTextInput,askGpt } from "../redux/modules/actions";
+        
 let initializedHavok
 
 HavokPhysics().then((havok) => {
@@ -138,6 +144,21 @@ const onRender = (scene: Scene) => {
     }
 }
 
+  const [ask, setAsk] = useState("");
+  const handleChange = ({ target: { value } }:any) => setAsk(value);
+  const dispatch = useDispatch()
+  const textInputState=useSelector((state:RootState)=>state.textInputReducer)
+  const pickBox2=()=>{
+   dispatch(changeTextInput())
+  }
+  
+  const handleSubmit=async(event:any)=>{
+    console.log(ask)
+    event.preventDefault();
+    await dispatch(askGpt(ask))
+  }
+  
+
 export default () => (
     <div>
         <SceneComponent
@@ -146,5 +167,18 @@ export default () => (
             onRender={onRender}
             id="modeler"
         />
+        <div>
+        {
+          textInputState.toggle?
+          <form onSubmit={handleSubmit}>
+            <input
+        type="text" className="askGpt"
+        placeholder="Ask to gpt" value={ask}
+        onChange={handleChange}
+        ></input> <button type="submit">질문</button>
+          </form>
+          :''
+        }
+        </div>
     </div>
 )
