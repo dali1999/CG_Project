@@ -35,7 +35,7 @@ function getResponseGptApi(action:gptAskType) {
 {
   headers: {
     "Content-Type": "application/json",
-    Authorization: `Bearer ${'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'}`,
+    Authorization: `Bearer ${'env Key need'}`,
   },
     });
 }
