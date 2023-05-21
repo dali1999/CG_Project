@@ -10,7 +10,7 @@ import { rootReducer } from "./redux/modules/reducer";
 
 
 const sagaMiddleware = createSagaMiddleware();
-const store = createStore(
+export const store = createStore(
   rootReducer,
   applyMiddleware(sagaMiddleware)
 );

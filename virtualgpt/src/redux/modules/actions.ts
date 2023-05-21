@@ -15,9 +15,17 @@ const askGpt=(payload:string)=>{
     }
 }
 
+const askGptSuccess=(payload:string)=>{
+    return{
+        type:ActionType.POST_GPT_SUCCESS,
+        payload
+    }
+}
+
 type ActionObject=
 |ReturnType<typeof changeTextInput>
 |ReturnType<typeof askGpt>
+|ReturnType<typeof askGptSuccess>
 
 export {changeTextInput,askGpt}
 export type{ActionObject}

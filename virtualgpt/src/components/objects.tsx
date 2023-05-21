@@ -14,8 +14,13 @@ import {
 import SceneComponent from 'babylonjs-hook' // if you install 'babylonjs-hook' NPM.
 import HavokPhysics from '@babylonjs/havok'
 import '../css/Modeling.css'
+import '@babylonjs/loaders'
 import Assets from '@babylonjs/assets'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
+import { store } from '..'
+import { useSelector, useDispatch } from "react-redux";
+import { changeTextInput,askGpt } from "../redux/modules/actions";
+import { RootState } from '../redux/modules/reducer'
 
 let initializedHavok
 
@@ -97,13 +102,37 @@ const addAssets = (scene: Scene) => {
         )
     })
 }
+
+const tryChat=async()=>{
+    await store.dispatch(changeTextInput())
+}
+
+const addIronMan=(scene:Scene)=>{
+    // SceneLoader.Append("../assets/","IronMan.gltf",scene,(scene)=>{
+    // })
+    SceneLoader.ImportMesh('',"../assets/","IronMan.gltf",scene,(meshes)=>{
+        console.log(meshes)
+
+        for(var i=0;i<meshes.length;i++){
+            const mesh = meshes[i]
+            mesh.position.set(0, 0, 30)
+            mesh.rotation = new Vector3(0, 0, 0)
+            mesh.checkCollisions=true;
+            mesh.actionManager=new ActionManager(scene)
+            mesh.actionManager.registerAction(new ExecuteCodeAction(ActionManager.OnPickTrigger,tryChat))
+        }
+        
+    })
+}
+
 const addTree = (scene: Scene) => {
     SceneLoader.ImportMesh(
-        'tree',
+        '',
         Assets.meshes.tree1_glb.rootUrl,
         Assets.meshes.tree1_glb.filename,
         scene,
         (meshes) => {
+            console.log(meshes)
             const mesh = meshes[0]
             mesh.position.set(0, 0, 30)
             mesh.scaling.setAll(2)
@@ -112,4 +141,4 @@ const addTree = (scene: Scene) => {
     )
 }
 
-export { addTest, addAssets, addTree }
+export { addTest, addAssets, addTree,addIronMan }

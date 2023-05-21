@@ -1,6 +1,6 @@
 
-import React,{useState}  from 'react'
-import { addTest, addAssets, addTree } from './objects'
+import React,{useEffect, useState}  from 'react'
+import { addTest, addAssets, addTree, addIronMan } from './objects'
 
 import {
     FreeCamera,
@@ -20,6 +20,7 @@ import {
 import SceneComponent from 'babylonjs-hook' // if you install 'babylonjs-hook' NPM.
 import HavokPhysics from '@babylonjs/havok'
 import '../css/Modeling.css'
+import '@babylonjs/loaders'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, rootReducer } from "../redux/modules/reducer";
@@ -43,16 +44,17 @@ const PI = Math.PI
 
 const onSceneReady = async (scene: Scene) => {
     // This creates and positions a free camera (non-mesh)
-    // var camera = new FreeCamera('camera1', new Vector3(100, 100, 100), scene)
-    const camera = new ArcRotateCamera(
-        'camera',
-        -Math.PI / 2,
-        Math.PI / 2.5,
-        10,
-        new Vector3(0, 100, 100)
-    )
+    var camera = new FreeCamera('camera1', new Vector3(50, 100, 50), scene)
+    // const camera = new ArcRotateCamera(
+    //     'camera',
+    //     -Math.PI / 2,
+    //     Math.PI / 2.5,
+    //     10,
+    //     new Vector3(0, 100, 100)
+    // )
     // This targets the camera to scene origin
     camera.setTarget(Vector3.Zero())
+    camera.angularSensibility = 2000;
 
     const canvas = scene.getEngine().getRenderingCanvas()
 
@@ -61,11 +63,11 @@ const onSceneReady = async (scene: Scene) => {
 
     // Set the camera as the active camera
     scene.activeCamera = camera
-
+    
     const assumedFramesPerSecond = 60
     const earthGravity = -90.81
     scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0)
-    // camera.applyGravity = true
+    camera.applyGravity = true
 
     // camera.ellipsoid = new Vector3(1, 1, 1)
     scene.collisionsEnabled = true
@@ -115,7 +117,7 @@ const onSceneReady = async (scene: Scene) => {
     addAssets(scene)
     addTest(scene)
     addTree(scene)
-
+    addIronMan(scene)
     
 }
 
@@ -138,6 +140,7 @@ const onRender = (scene: Scene) => {
         const rpm = 10
         //box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000);
     }
+
 }
 
 
@@ -148,14 +151,26 @@ export default () => {
   const handleChange = ({ target: { value } }:any) => setAsk(value);
   const dispatch = useDispatch()
   const textInputState=useSelector((state:RootState)=>state.textInputReducer)
-  const pickBox2=()=>{
-   dispatch(changeTextInput())
-  }
+  const gptRespnseState=useSelector((state:RootState)=>state.gptAskReducer)
+//   const pickBox2=()=>{
+//    dispatch(changeTextInput())
+//   }
+  useEffect(()=>{
+    const canvas:any = document.getElementById('modeler')
+    const engine :any = new Engine(canvas)
+
+    canvas.width=1000;
+    canvas.height=500;
+  },[])
   
   const handleSubmit=async(event:any)=>{
     console.log(ask)
     event.preventDefault();
     await dispatch(askGpt(ask))
+    console.log('???')
+    //const gptRespnseState=store.getState((state:RootState)=>state.gptAskReducer)
+    console.log(gptRespnseState)
+    console.log('??')
   }
   
 
