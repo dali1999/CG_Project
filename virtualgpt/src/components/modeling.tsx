@@ -1,6 +1,5 @@
-
-import React,{useEffect, useState}  from 'react'
-import { addTest, addAssets, addTree, addIronMan } from './objects'
+import React, { useEffect, useState } from 'react'
+import { addIronMan, addFurniture, addDoor } from './objects'
 
 import {
     FreeCamera,
@@ -22,10 +21,10 @@ import HavokPhysics from '@babylonjs/havok'
 import '../css/Modeling.css'
 import '@babylonjs/loaders'
 import { StandardMaterial } from '@babylonjs/core/Materials/standardMaterial'
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, rootReducer } from "../redux/modules/reducer";
-import { changeTextInput,askGpt } from "../redux/modules/actions";
-        
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState, rootReducer } from '../redux/modules/reducer'
+import { changeTextInput, askGpt } from '../redux/modules/actions'
+
 let initializedHavok
 
 HavokPhysics().then((havok) => {
@@ -37,6 +36,7 @@ let wall1: Mesh
 let wall2: Mesh
 let wall3: Mesh
 let wall4: Mesh
+let ceiling: Mesh
 
 let sphere
 
@@ -44,17 +44,17 @@ const PI = Math.PI
 
 const onSceneReady = async (scene: Scene) => {
     // This creates and positions a free camera (non-mesh)
-    var camera = new FreeCamera('camera1', new Vector3(50, 100, 50), scene)
-    // const camera = new ArcRotateCamera(
-    //     'camera',
-    //     -Math.PI / 2,
-    //     Math.PI / 2.5,
-    //     10,
-    //     new Vector3(0, 100, 100)
-    // )
+    // var camera = new FreeCamera('camera1', new Vector3(50, 100, 50), scene)
+    const camera = new ArcRotateCamera(
+        'camera',
+        -Math.PI / 2,
+        Math.PI / 2.5,
+        10,
+        new Vector3(0, 100, 100)
+    )
     // This targets the camera to scene origin
     camera.setTarget(Vector3.Zero())
-    camera.angularSensibility = 2000;
+    // camera.angularSensibility = 2000
 
     const canvas = scene.getEngine().getRenderingCanvas()
 
@@ -63,11 +63,11 @@ const onSceneReady = async (scene: Scene) => {
 
     // Set the camera as the active camera
     scene.activeCamera = camera
-    
+
     const assumedFramesPerSecond = 60
     const earthGravity = -90.81
     scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0)
-    camera.applyGravity = true
+    // camera.applyGravity = true
 
     // camera.ellipsoid = new Vector3(1, 1, 1)
     scene.collisionsEnabled = true
@@ -87,23 +87,28 @@ const onSceneReady = async (scene: Scene) => {
     //wall
     wall1 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
     wall1.position = new Vector3(0, 15, -50)
-    wall1.rotation = new Vector3(Math.PI / 2, 0, 0)
+    wall1.rotation = new Vector3(PI / 2, 0, 0)
     wall1.checkCollisions = true
 
     wall2 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
     wall2.position = new Vector3(-50, 15, 0)
-    wall2.rotation = new Vector3(Math.PI / 2, Math.PI / 2, 0)
+    wall2.rotation = new Vector3(PI / 2, PI / 2, 0)
     wall2.checkCollisions = true
 
     wall3 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
     wall3.position = new Vector3(50, 15, 0)
-    wall3.rotation = new Vector3(Math.PI / 2, 0, Math.PI / 2)
+    wall3.rotation = new Vector3(PI / 2, 0, PI / 2)
     wall3.checkCollisions = true
 
     wall4 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
     wall4.position = new Vector3(0, 15, 50)
-    wall4.rotation = new Vector3(Math.PI / 2, -Math.PI / 2, Math.PI / 2)
+    wall4.rotation = new Vector3(PI / 2, -PI / 2, PI / 2)
     wall4.checkCollisions = true
+
+    ceiling = MeshBuilder.CreateGround('ground', { width: 100, height: 100 })
+    ceiling.position = new Vector3(0, 30, 0)
+    ceiling.rotation = new Vector3(PI, 0, 0)
+    ceiling.checkCollisions = true
 
     //ground.checkCollisions = true;
     const gravity = new Vector3(0, -10, 0)
@@ -111,24 +116,11 @@ const onSceneReady = async (scene: Scene) => {
     const hk = await HavokPhysics()
     const babylonPlugin = new HavokPlugin(true, hk)
     scene.enablePhysics(gravity, babylonPlugin)
-    // Our built-in 'ground' shape.
-    //MeshBuilder.CreateGround("ground", { width: 6, height: 6 }, scene);
 
-    addAssets(scene)
-    addTest(scene)
-    addTree(scene)
     addIronMan(scene)
-    
+    addFurniture(scene)
+    addDoor(scene)
 }
-
-// const addSphere = (scene: Scene) => {
-//     // Create a sphere above the ground============================
-//     sphere = MeshBuilder.CreateSphere('sphere', { diameter: 10 }, scene)
-//     sphere.position = new Vector3(0, 0, 0)
-//     const material = new StandardMaterial('boxMaterial', scene)
-//     material.diffuseColor = new Color3(1, 0.5, 0) // Orange color
-//     sphere.material = material
-// }
 
 /**
  * Will run on every frame render.  We are spinning the box on y-axis.
@@ -140,62 +132,63 @@ const onRender = (scene: Scene) => {
         const rpm = 10
         //box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000);
     }
-
 }
-
-
 
 export default () => {
+    const [ask, setAsk] = useState('')
+    const handleChange = ({ target: { value } }: any) => setAsk(value)
+    const dispatch = useDispatch()
+    const textInputState = useSelector(
+        (state: RootState) => state.textInputReducer
+    )
+    const gptRespnseState = useSelector(
+        (state: RootState) => state.gptAskReducer
+    )
+    //   const pickBox2=()=>{
+    //    dispatch(changeTextInput())
+    //   }
+    useEffect(() => {
+        const canvas: any = document.getElementById('modeler')
+        const engine: any = new Engine(canvas)
 
-  const [ask, setAsk] = useState("");
-  const handleChange = ({ target: { value } }:any) => setAsk(value);
-  const dispatch = useDispatch()
-  const textInputState=useSelector((state:RootState)=>state.textInputReducer)
-  const gptRespnseState=useSelector((state:RootState)=>state.gptAskReducer)
-//   const pickBox2=()=>{
-//    dispatch(changeTextInput())
-//   }
-  useEffect(()=>{
-    const canvas:any = document.getElementById('modeler')
-    const engine :any = new Engine(canvas)
+        canvas.width = 1000
+        canvas.height = 500
+    }, [])
 
-    canvas.width=1000;
-    canvas.height=500;
-  },[])
-  
-  const handleSubmit=async(event:any)=>{
-    console.log(ask)
-    event.preventDefault();
-    await dispatch(askGpt(ask))
-    console.log('???')
-    //const gptRespnseState=store.getState((state:RootState)=>state.gptAskReducer)
-    console.log(gptRespnseState)
-    console.log('??')
-  }
-  
+    const handleSubmit = async (event: any) => {
+        console.log(ask)
+        event.preventDefault()
+        await dispatch(askGpt(ask))
+        console.log('???')
+        //const gptRespnseState=store.getState((state:RootState)=>state.gptAskReducer)
+        console.log(gptRespnseState)
+        console.log('??')
+    }
 
-    return(
+    return (
         <div>
-        <SceneComponent
-            antialias
-            onSceneReady={onSceneReady}
-            onRender={onRender}
-            id="modeler"
-        />
-        <div>
-        {
-          textInputState.toggle?
-          <form onSubmit={handleSubmit}>
-            <input
-        type="text" className="askGpt"
-        placeholder="Ask to gpt" value={ask}
-        onChange={handleChange}
-        ></input> <button type="submit">질문</button>
-          </form>
-          :''
-        }
+            <SceneComponent
+                antialias
+                onSceneReady={onSceneReady}
+                onRender={onRender}
+                id="modeler"
+            />
+            <div>
+                {textInputState.toggle ? (
+                    <form onSubmit={handleSubmit}>
+                        <input
+                            type="text"
+                            className="askGpt"
+                            placeholder="Ask to gpt"
+                            value={ask}
+                            onChange={handleChange}
+                        ></input>{' '}
+                        <button type="submit">질문</button>
+                    </form>
+                ) : (
+                    ''
+                )}
+            </div>
         </div>
-    </div>
     )
 }
-    
