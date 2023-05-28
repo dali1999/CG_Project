@@ -107,7 +107,7 @@ const addFurniture = (scene: Scene) => {
             scene,
             (meshes) => {
                 console.log(meshes)
-                for(var i =0; i<meshes.length;i++){
+                for(var i =0; i<meshes.length/2;i++){
                 const mesh = meshes[i]
                 meshes[0].position = asset.position
                 meshes[0].rotation = asset.rotation

@@ -56,7 +56,7 @@ const onSceneReady = async (scene: Scene) => {
     // This targets the camera to scene origin
     camera.setTarget(Vector3.Zero())
     camera.angularSensibility = 2000
-     camera.speed=2
+     camera.speed=1
    
     const canvas = scene.getEngine().getRenderingCanvas()
 
@@ -69,9 +69,9 @@ const onSceneReady = async (scene: Scene) => {
     const assumedFramesPerSecond = 60
     const earthGravity = -20.81
     scene.gravity = new Vector3(0, earthGravity / assumedFramesPerSecond, 0)
-     camera.applyGravity = true
+    camera.applyGravity = true
 
-   camera.ellipsoid = new Vector3(15, 15, 15)
+    camera.ellipsoid = new Vector3(3, 7, 3)
     scene.collisionsEnabled = true
     camera.checkCollisions = true
 
@@ -87,6 +87,28 @@ const onSceneReady = async (scene: Scene) => {
     ground.checkCollisions = true
     ground.isVisible=false
 
+    const box = MeshBuilder.CreateBox("box",{size:20}, scene); //scene is 
+    box.checkCollisions=true
+    box.position=new Vector3(30, 10, 40)
+
+    const box2 = MeshBuilder.CreateBox("box",{size:20}, scene); //scene is 
+    box2.scaling=new Vector3(3,1,1)
+    box2.checkCollisions=true
+    box2.position=new Vector3(-28, 10, 45)
+
+    const box3 = MeshBuilder.CreateBox("box",{size:20}, scene); //scene is 
+    box3.checkCollisions=true
+    box3.position=new Vector3(-18, 10, 18)
+
+    const box4 = MeshBuilder.CreateBox("box",{size:20}, scene); //scene is 
+    box4.checkCollisions=true
+    box4.position=new Vector3(-33, 10, -25)
+
+    box.isVisible=false
+    box2.isVisible=false
+    box3.isVisible=false
+    box4.isVisible=false
+    
     //wall
     // wall1 = MeshBuilder.CreateGround('ground', { width: 100, height: 30 })
     // wall1.position = new Vector3(0, 15, -50)
@@ -176,17 +198,20 @@ export default () => {
                 onRender={onRender}
                 id="modeler"
             />
-            <div>
+            <div style={{marginTop:-200,marginLeft:300}}>
                 {textInputState.toggle ? (
-                    <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit} >
                         <input
                             type="text"
                             className="askGpt"
                             placeholder="Ask to gpt"
                             value={ask}
                             onChange={handleChange}
+                            style={{backgroundColor:'transparent', fontSize:20}}
                         ></input>{' '}
-                        <button type="submit">질문</button>
+                        <button type="submit"
+                        style={{backgroundColor:'transparent', fontSize:20}}
+                        >질문</button>
                     </form>
                 ) : (
                     ''
