@@ -16,7 +16,7 @@ const data={
 }
 const headers={
     'Content-Type': 'application/json',
-    'Authorization': `Bearer ${'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'}`,
+    'Authorization': `Bearer ${'gpt key'}`,
 }
 
 function getResponseGptApi(action:gptAskType) {

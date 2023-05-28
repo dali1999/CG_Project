@@ -106,11 +106,15 @@ const addFurniture = (scene: Scene) => {
             asset.filename,
             scene,
             (meshes) => {
-                const mesh = meshes[0]
-                mesh.position = asset.position
-                mesh.rotation = asset.rotation
-                mesh.scaling = asset.scaling
+                console.log(meshes)
+                for(var i =0; i<meshes.length;i++){
+                const mesh = meshes[i]
+                meshes[0].position = asset.position
+                meshes[0].rotation = asset.rotation
+                meshes[0].scaling = asset.scaling
                 mesh.checkCollisions = true
+                }
+                
             }
         )
     })
@@ -142,11 +146,14 @@ const addDoor = (scene: Scene) => {
             asset.filename,
             scene,
             (meshes) => {
-                const mesh = meshes[0]
-                mesh.position = asset.position
-                mesh.rotation = asset.rotation
-                mesh.scaling = asset.scaling
+                console.log(meshes)
+                for(var i =0; i<meshes.length;i++){
+                const mesh = meshes[i]
+                meshes[0].position = asset.position
+                meshes[0].rotation = asset.rotation
+                meshes[0].scaling = asset.scaling
                 mesh.checkCollisions = true
+                }
             }
         )
     })
@@ -180,5 +187,26 @@ const addIronMan = (scene: Scene) => {
         }
     )
 }
+const addWall = (scene: Scene) => {
+    SceneLoader.ImportMesh(
+        '',
+        '../assets/',
+        'sceneWall.glb',
+        scene,
+        (meshes) => {
+            console.log(meshes)
 
-export { addIronMan, addFurniture, addDoor }
+            for (var i = 0; i < meshes.length; i++) {
+                const mesh = meshes[i]
+                mesh.position.set(0, 6, 0)
+                mesh.rotation = new Vector3(0, 0, 0)
+                mesh.scaling.setAll(5)
+                mesh.checkCollisions = true
+
+                
+            }
+        }
+    )
+}
+
+export { addIronMan, addFurniture, addDoor,addWall }
