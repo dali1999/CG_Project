@@ -177,8 +177,9 @@ const addIronMan = (scene: Scene) => {
                 const mesh = meshes[i]
                 mesh.position.set(0, 0, 0)
                 mesh.rotation = new Vector3(0, 0, 0)
-                mesh.scaling.setAll(0.25)
-                mesh.checkCollisions = true
+                mesh.scaling.setAll(0.2)
+                mesh.name="robot"
+                //mesh.checkCollisions = true
                 mesh.actionManager = new ActionManager(scene)
                 mesh.actionManager.registerAction(
                     new ExecuteCodeAction(ActionManager.OnPickTrigger, tryChat)

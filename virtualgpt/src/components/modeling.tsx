@@ -82,7 +82,7 @@ const onSceneReady = async (scene: Scene) => {
     light.intensity = 0.4
 
     //Plain ground
-    ground = MeshBuilder.CreateGround('ground', { width: 100, height: 300 })
+    ground = MeshBuilder.CreateGround('ground', { width: 100, height: 800 })
     ground.position = new Vector3(0, 2, 0)
     ground.checkCollisions = true
     ground.isVisible=false
@@ -155,9 +155,32 @@ const onSceneReady = async (scene: Scene) => {
 const onRender = (scene: Scene) => {
     if (ground !== undefined) {
         var deltaTimeInMillis = scene.getEngine().getDeltaTime()
-        //scene.cameras[0].position.y=25
-        const rpm = 10
-        //box.rotation.y += (rpm / 60) * Math.PI * 2 * (deltaTimeInMillis / 1000);
+
+    }
+   
+    var robot :any
+    scene.meshes.find((mesh)=>{
+        if(mesh.name=="robot"){
+            robot=mesh
+        }}) 
+  
+    if ( Math.sqrt((robot?.position.x-scene.cameras[0].position.x)**2+(robot?.position.y-scene.cameras[0].position.y)**2+(robot?.position.z-scene.cameras[0].position.z)**2) >15){
+        console.log('??')
+        setTimeout(()=>{
+            scene.meshes.find((mesh)=>{
+                if(mesh.name=="robot"){
+                    //mesh.parent=scene.cameras[0]
+                    mesh.position.x=scene.cameras[0].position.x
+                    mesh.position.y=scene.cameras[0].position.y-10
+
+                    mesh.position.z=scene.cameras[0].position.z
+            
+                    
+                }}) 
+
+            // robot.position.x=scene.cameras[0].position.x
+            // robot.position.y=scene.cameras[0].position.y
+        },2000)
     }
 }
 
