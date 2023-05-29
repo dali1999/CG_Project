@@ -1,70 +1,74 @@
 {
-  "name": "virtualgpt",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@babylonjs/assets": "^5.20.0",
-    "@babylonjs/core": "^6.3.1",
-    "@babylonjs/havok": "^1.0.1",
-    "@babylonjs/loaders": "^6.4.1",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.30",
-    "@types/react": "^18.2.6",
-    "@types/react-dom": "^18.2.4",
-    "@types/react-redux": "^7.1.25",
-    "axios": "^1.4.0",
-    "babylonjs": "^6.3.1",
-    "babylonjs-hook": "^0.1.1",
-    "babylonjs-loaders": "^6.4.1",
-    "babylonjs-procedural-textures": "^6.4.1",
-    "css-modules-typescript-loader": "^4.0.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-redux": "^8.0.5",
-    "redux": "^4.2.1",
-    "redux-saga": "^1.2.3",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack serve --open",
-    "build": "webpack"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@babel/core": "^7.21.8",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/preset-env": "^7.21.5",
-    "@babel/preset-react": "^7.18.6",
-    "babel-loader": "^9.1.2",
-    "copy-webpack-plugin": "^11.0.0",
-    "css-loader": "^6.7.4",
-    "dotenv": "^16.0.3",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-import-resolver-typescript": "^3.5.5",
-    "eslint-plugin-prettier": "^4.2.1",
-    "file-loader": "^6.2.0",
-    "html-webpack-plugin": "^5.5.1",
-    "interpolate-html-plugin": "^4.0.0",
-    "prettier": "2.8.8",
-    "ts-loader": "^9.4.2",
-    "typescript": "^5.0.4",
-    "webpack": "^5.83.1",
-    "webpack-cli": "^5.1.1",
-    "webpack-dev-server": "^4.15.0"
-  }
+    "name": "virtualgpt",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@babylonjs/assets": "^5.20.0",
+        "@babylonjs/core": "^6.3.1",
+        "@babylonjs/havok": "^1.0.1",
+        "@babylonjs/loaders": "^6.4.1",
+        "@testing-library/jest-dom": "^5.16.5",
+        "@testing-library/react": "^13.4.0",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/jest": "^27.5.2",
+        "@types/node": "^16.18.30",
+        "@types/react": "^18.2.6",
+        "@types/react-dom": "^18.2.4",
+        "@types/react-redux": "^7.1.25",
+        "axios": "^1.4.0",
+        "babylonjs": "^6.3.1",
+        "babylonjs-hook": "^0.1.1",
+        "babylonjs-loaders": "^6.4.1",
+        "babylonjs-procedural-textures": "^6.4.1",
+        "css-modules-typescript-loader": "^4.0.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-redux": "^8.0.5",
+        "redux": "^4.2.1",
+        "redux-saga": "^1.2.3",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "webpack serve --open",
+        "build": "webpack",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
+    },
+    "homepage": "https://dali1999.github.io/CG_Project/virtualgpt",
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@babel/core": "^7.21.8",
+        "@babel/plugin-proposal-class-properties": "^7.18.6",
+        "@babel/preset-env": "^7.21.5",
+        "@babel/preset-react": "^7.18.6",
+        "babel-loader": "^9.1.2",
+        "copy-webpack-plugin": "^11.0.0",
+        "css-loader": "^6.7.4",
+        "dotenv": "^16.0.3",
+        "eslint-config-prettier": "^8.8.0",
+        "eslint-import-resolver-typescript": "^3.5.5",
+        "eslint-plugin-prettier": "^4.2.1",
+        "file-loader": "^6.2.0",
+        "gh-pages": "^5.0.0",
+        "html-webpack-plugin": "^5.5.1",
+        "interpolate-html-plugin": "^4.0.0",
+        "prettier": "2.8.8",
+        "ts-loader": "^9.4.2",
+        "typescript": "^5.0.4",
+        "webpack": "^5.83.1",
+        "webpack-cli": "^5.1.1",
+        "webpack-dev-server": "^4.15.0"
+    }
 }
